@@ -112,8 +112,8 @@ Commands that need arguments get them in two ways:
 
 ```bash
 g xacp feature "Add feature"
-#      │  │
-#      │  └─ "Add feature" → c (commit)
+#      │       │
+#      │       └─ "Add feature" → c (commit)
 #      └──── "feature" → x (checkout)
 ```
 
@@ -174,7 +174,7 @@ g W                              # push, back to main
 
 ## Convenience Mappings
 
-For improved muscle-memory, aliases for common commands are included at the bottom.
+For improved muscle-memory usage, aliases for common commands are included at the bottom.
 
 These alias allow you to omit space after typing `g`, speeding up the chord typing (`ga`, `gc`, `gx`, etc.).
 
