@@ -121,9 +121,14 @@ g xacp feature "Add feature"
 
 ```bash
 g x"feature"ac"Add feature"p
+#  │        │ │            │
+#  │        │ │            └─ p (push, no arg)
+#  │        │ └─ "Add feature" → c (commit)
+#  │        └─ a (add, no arg)
+#  └─ "feature" → x (checkout)
 ```
 
-Quoted args bind explicitly, which is useful when the argument order would otherwise be ambiguous.
+Quoted args bind explicitly to the command immediately before them. This is useful when the argument order would otherwise be ambiguous.
 
 ## Workflows
 
