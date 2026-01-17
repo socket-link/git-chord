@@ -3,13 +3,30 @@
 
 set -e
 
-INSTALL_DIR="${GIT_CHORD_DIR:-$HOME/.git-chord}"
-REPO_URL="https://github.com/user/git-chord.git"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DEFAULT_INSTALL_DIR="$HOME/.git-chord"
+INSTALL_DIR="${GIT_CHORD_DIR:-$DEFAULT_INSTALL_DIR}"
+REPO_URL="${GIT_CHORD_REPO_URL:-git@github.com:socket-link/git-chord.git}"
+
+# Prefer local repo if we're running inside it and no explicit install dir is set
+LOCAL_REPO_DIR=""
+if git -C "$SCRIPT_DIR" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  REPO_TOPLEVEL="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel)"
+  if [ -f "$REPO_TOPLEVEL/git-chord.zsh" ]; then
+    LOCAL_REPO_DIR="$REPO_TOPLEVEL"
+  fi
+fi
+
+if [ -z "${GIT_CHORD_DIR:-}" ] && [ -n "$LOCAL_REPO_DIR" ]; then
+  INSTALL_DIR="$LOCAL_REPO_DIR"
+fi
 
 echo "Installing git-chord to $INSTALL_DIR..."
 
-# Clone or update
-if [ -d "$INSTALL_DIR" ]; then
+# Clone or update (unless using local repo)
+if [ "$INSTALL_DIR" = "$LOCAL_REPO_DIR" ] && [ -n "$LOCAL_REPO_DIR" ]; then
+  echo "Using local repo at $INSTALL_DIR"
+elif [ -d "$INSTALL_DIR" ]; then
   echo "Updating existing installation..."
   cd "$INSTALL_DIR" && git pull
 else
