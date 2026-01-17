@@ -116,9 +116,8 @@ _git_chord_parse() {
       
       echo "⚡ Macro $char → expanding for branch '$start_branch'" >&2
       
-      local IFS=':'
-      local -a macro_parts=($macro)
-      unset IFS
+      # Split on ":" without losing spaces inside parts
+      local -a macro_parts=("${(s/:/)macro}")
       
       for part in "${macro_parts[@]}"; do
         local macro_cmd="${part%% *}"
